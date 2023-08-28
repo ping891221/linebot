@@ -94,25 +94,24 @@ def handle_text_message(event):
     print(data_type)
     event_reply_token=event.reply_token
 
-    if user_message == "自訂名字":
-        send_push_message(user_id, "請輸入想自訂的名字")
+    if user_message == "Set your own name":
+        send_push_message(user_id, "Please enter the desired name for customization:")
         set_user_status(user_id, "waiting_for_name")
-    elif user_message == "自訂號碼":
-        send_push_message(user_id, "請輸入想自訂的號碼")
+    elif user_message == "Set your flight number or train number":
+        send_push_message(user_id, "Please enter the desired flight number or train number for customization:")
         set_user_status(user_id, "waiting_for_number")
     else:
         user_status = get_user_status(str(user_id))
         if user_status == "waiting_for_name":
             insert_new_data(table="users1",column_name="name", value=user_message)
-            send_push_message(user_id, "名字已更新")
+            send_push_message(user_id, "Name has been set！")
             set_user_status(user_id, "active")
         elif user_status == "waiting_for_number":
             insert_new_data(table="users2",column_name="number",value=user_message)
-            send_push_message(user_id, "號碼已更新")
+            send_push_message(user_id, "Number has been set！")
             set_user_status(user_id, "active")
         else:
-            send_push_message(user_id, "請輸入有效指令")
-
+            send_push_message(user_id, "Please enter a valid command.")
 def insert_new_data(table, column_name,value):
     try:
         query = f"INSERT INTO {table} ({column_name}) VALUES (?)"
